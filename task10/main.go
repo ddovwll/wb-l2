@@ -49,7 +49,13 @@ func readFileLines(fileName string, lines *[]string) error {
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer func(f *os.File) {
+		err := f.Close()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error closing file %s: %v\n", fileName, err)
+			os.Exit(1)
+		}
+	}(f)
 
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
