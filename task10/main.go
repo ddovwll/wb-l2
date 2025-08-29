@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 	"task10/sort"
@@ -19,8 +20,7 @@ func main() {
 	if len(args) > 0 {
 		for _, fileName := range args {
 			if err := readFileLines(fileName, &lines); err != nil {
-				fmt.Fprintf(os.Stderr, "error while reading file %s: %v\n", fileName, err)
-				os.Exit(1)
+				log.Fatal(err)
 			}
 		}
 	} else {
@@ -33,8 +33,7 @@ func main() {
 			lines = append(lines, line)
 		}
 		if err := scanner.Err(); err != nil {
-			fmt.Fprintf(os.Stderr, "error reading stdin: %v\n", err)
-			os.Exit(1)
+			log.Fatal(err)
 		}
 	}
 
@@ -52,8 +51,7 @@ func readFileLines(fileName string, lines *[]string) error {
 	defer func(f *os.File) {
 		err := f.Close()
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "error closing file %s: %v\n", fileName, err)
-			os.Exit(1)
+			log.Fatal(err)
 		}
 	}(f)
 
